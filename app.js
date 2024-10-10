@@ -4,7 +4,7 @@ const app = express()
 const PORT = 3500
 const cors = require('cors')
 const mongoose = require('mongoose')
-// const productRoutes = require('./routes/productRoutes')
+const productRoutes = require('./routes/productRoutes')
 
 app.use(cors())
 app.use(express.json())
@@ -14,6 +14,7 @@ const db = mongoose.connection
 db.on('error', (errorMessage) => console.log(errorMessage))
 db.once('open', () => console.log('Connected to db successfully!'))
 
+app.use('/api/v1/products', productRoutes)
 
 app.listen(PORT, () =>
 {

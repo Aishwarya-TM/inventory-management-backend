@@ -1,4 +1,4 @@
-const initialData = 
+const productData = 
     [
         {
           "name": "PVC Pipe",
@@ -250,4 +250,4 @@ const initialData =
       ]
       
 
-module.export = initialData
+module.exports = productData
