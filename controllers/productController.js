@@ -44,43 +44,38 @@ const deleteProduct = async (request, response) => {
     }
 };
 
-const searchProductByName = async (request, response) => {
-    let { productName } = request.params;
+const searchProduct = async (request, response) => {
+    let { query } = request.query;
+
     try {
-        const formattedCategory = productName.replace(/[\s-]/g, '[-\\s]?');
+        if (!query) {
+            return response.status(400).json({ message: "Search query is required" });
+        }
+
+        const formattedCategory = query.replace(/[\s-]/g, '[-\\s]?');
         const regexPattern = new RegExp(formattedCategory, 'i');
 
-        let product = await productModel.find({ name: regexPattern });
-        if (!product || product.length === 0) {
-            return response.status(404).json({ message: "No product found!:(" });
+        const products = await productModel.find({
+            $or: [
+                { name: regexPattern },
+                { category: regexPattern }
+            ]
+        }).select('-_id');
+
+        if (products.length === 0) {
+            return response.status(404).json({ message: "No product for your search query" });
         }
-        response.status(200).json(product);
+
+        response.status(200).json(products);
     } catch (error) {
         response.status(500).json({ message: error.message });
     }
-};
+}
 
-const searchProductByCategory = async (request, response) => {
-    let { productCategory } = request.params;
-    try {
-        const formattedCategory = productCategory.replace(/[\s-]/g, '[-\\s]?');
-        const regexPattern = new RegExp(formattedCategory, 'i');
-
-        let product = await productModel.find({ category: regexPattern });
-        if (!product || product.length === 0) {
-            return response.status(404).json({ message: "No product found!:(" });
-        }
-        response.status(200).json(product);
-    } catch (error) {
-        response.status(500).json({ message: error.message });
-    }
-};
-
-const searchProductByUPC = async(request, response) =>
-{
+const searchProductByUPC = async (request, response) => {
     let { productUPC } = request.params;
     try {
-        
+
         let product = await productModel.find({ upc: productUPC });
         if (!product || product.length === 0) {
             return response.status(404).json({ message: "No product found!:(" });
@@ -91,9 +86,122 @@ const searchProductByUPC = async(request, response) =>
     }
 }
 
-module.exports = { getAllproducts, 
-    addNewProduct, 
-    updateProduct, 
+const filterProduct = async (request, response) => {
+    const { category, priceMin, priceMax, quantityMin, quantityMax } = request.query;
+    let filter = {};
+    try {
+        if (category) {
+            filter.category = category;
+        }
+        if (priceMin || priceMax) {
+            filter.price = {};
+            if (priceMin) {
+                filter.price.$gte = Number(priceMin)
+            }
+            filter.price.$lte = Number(priceMax)
+        }
+        if (quantityMax || quantityMin) {
+            filter.quantity = {};
+            if (quantityMin) {
+                filter.quantity.$gte = Number(quantityMin)
+            }
+            filter.quantity.$lte = Number(quantityMax)
+        }
+        const product = await productModel.find(filter).populate('Supplier', 'name email phone address')
+        if (!product || product.length === 0) {
+            response.status(404).json({ message: "No product found for your search request" })
+        }
+        response.status(200).json(product)
+    }
+    catch (error) {
+        response.status(500).json({ message: error.message })
+    }
+
+}
+
+const trackInventoryLevel = async (request, response) => {
+    let { lowStockThreshHold } = request.query;
+    lowStockThreshHold = Number(lowStockThreshHold);
+
+    try {
+        let product = await productModel.find({
+            quantity: { $lte: lowStockThreshHold }
+        }).select('name category quantity upc');
+
+        if (!product || product.length === 0) {
+            return response.status(404).json({ message: "No product found below the provided quantity" });
+        }
+
+        return response.status(200).json(product);
+    } catch (error) {
+        return response.status(500).json({ message: error.message });
+    }
+}
+
+const generateReports = async (req, res) => {
+    try {
+        const { startDate, endDate } = req.query;
+
+        if (!startDate || !endDate) {
+            return res.status(400).json({ message: 'Start date and end date are required' });
+        }
+
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+
+        const totalProductsAdded = await productModel.countDocuments({
+            dateAdded: { $gte: start, $lte: end },
+        });
+
+        const inventoryValue = await productModel.aggregate([
+            {
+                $match: {
+                    dateAdded: { $gte: start, $lte: end },
+                },
+            },
+            {
+                $group: {
+                    _id: null,
+                    totalValue: { $sum: { $multiply: ['$price', '$quantity'] } },
+                },
+            },
+        ]);
+
+        const totalSales = await productModel.aggregate([
+            {
+                $match: {
+                    dateAdded: { $gte: start, $lte: end },
+                },
+            },
+            {
+                $group: {
+                    _id: null,
+                    totalSold: { $sum: '$sold' },
+                },
+            },
+        ]);
+
+        res.status(200).json({
+            totalProductsAdded,
+            inventoryValue: inventoryValue[0] ? inventoryValue[0].totalValue : 0,
+            totalSales: totalSales[0] ? totalSales[0].totalSold : 0,
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
+
+
+
+module.exports = {
+    getAllproducts,
+    addNewProduct,
+    updateProduct,
     deleteProduct,
-     searchProductByName,
-      searchProductByCategory, searchProductByUPC};
+    searchProduct,
+    searchProductByUPC,
+    filterProduct,
+    trackInventoryLevel
+};
