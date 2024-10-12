@@ -7,6 +7,7 @@ const mongoose = require('mongoose')
 const productRoutes = require('./routes/productRoutes')
 const employeeRoutes = require('./routes/employeeRoutes')
 const supplierRoutes = require('./routes/supplierRoutes')
+const orderRoutes = require('./routes/orderData')
 
 app.use(cors())
 app.use(express.json())
@@ -19,6 +20,7 @@ db.once('open', () => console.log('Connected to db successfully!'))
 app.use('/api/v1/products', productRoutes)
 app.use('/api/v1/admin/employee', employeeRoutes)
 app.use('/api/v1/admin/supplier', supplierRoutes)
+app.use('/api/v1/order',orderRoutes)
 
 app.listen(PORT, () =>
 {
