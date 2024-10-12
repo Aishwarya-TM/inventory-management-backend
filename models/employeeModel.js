@@ -1,12 +1,6 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-
+const mongoose = require('mongoose')
 const employeeSchema = new mongoose.Schema(
   {
-    empId: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true
-    },
     name: {
       type: String,
       required: true,
@@ -48,17 +42,16 @@ const employeeSchema = new mongoose.Schema(
   }
 );
 
-userSchema.pre('save', async function (next) {
-  if (this.isModified('password')) {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-  }
-  next();
-});
+// employeeSchema.pre('save', async function (next) {
+//   if (this.isModified('password')) {
+//     const salt = await bcrypt.genSalt(10);
+//     this.password = await bcrypt.hash(this.password, salt);
+//   }
+//   next();
+// });
 
-userSchema.methods.comparePassword = async function (candidatePassword) {
-  return await bcrypt.compare(candidatePassword, this.password);
-};
+// employeeSchema.methods.comparePassword = async function (candidatePassword) {
+//   return await bcrypt.compare(candidatePassword, this.password);
+// };
 
 module.exports = mongoose.model('Employees', employeeSchema);
-

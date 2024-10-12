@@ -10,22 +10,6 @@ const getAllEmployees = async (request, response) => {
     response.status(200).json(employees);
 };
 
-const searchEmployeeById = async(request, response) =>
-{
-    let {empId} = request.params;
-    try{
-        let employee = await employeeModel.findById(empId).select('-_id');
-        if(!employee || employee.length === 0){
-            response.status(404).json({message: "Employee not found"});
-        }
-        else{
-            response.status(200).json(employee);
-        }
-    }
-    catch{
-        response.status(500).json({message: "Internal Server Error"});
-    }
-}
 
 const addNewEmployee = async (request, response) => {
     let employeeToBeAdded = request.body;
@@ -42,6 +26,20 @@ const addNewEmployee = async (request, response) => {
     }
 };
 
+const searchEmployeeById = async(request, response) => {
+    let { id } = request.params;
+    try {
+        let employee = await employeeModel.findById(id).select('-_id');
+        if (!employee) {
+            response.status(404).json({ message: "Employee not found" });
+        } else {
+            response.status(200).json(employee);
+        }
+    } catch (error) {
+        response.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
 const updateEmployee = async (request, response) => {
     const employeeToBeUpdated = request.body;
     try {
@@ -50,7 +48,7 @@ const updateEmployee = async (request, response) => {
             let updatedEmployee = await employeeModel.updateMany({ email: employeeToBeUpdated.email }, employeeToBeUpdated);
             response.status(200).json(updatedEmployee);
         } else {
-            response.status(404).json({ message: `Employee with email id ${employeeToBeUpdated.email} doesn't exists` });
+            response.status(404).json({ message: `Employee with email id ${employeeToBeUpdated.email} doesn't exist!` });
         }
     } catch (error) {
         response.status(500).json({ message: error.message });
@@ -65,11 +63,12 @@ const deleteEmployee = async (request, response) => {
             let deletedEmployee = await employeeModel.deleteOne({ email: employeeToBeDeleted.email });
             response.status(200).json(deletedEmployee);
         } else {
-            response.status(404).json({ message: `Employee with email id ${employeeToBeDeleted.email} doesn't exists` });
+            response.status(404).json({ message: `Employee with email id ${employeeToBeUpdated.email} doesn't exist!` });
         }
     } catch (error) {
         response.status(500).json({ message: error.message });
     }
 };
 
-module.exports = { getAllEmployees, addNewEmployee, updateEmployee, deleteEmployee, searchEmployeeById}; 
+
+module.exports = { getAllEmployees, addNewEmployee, updateEmployee, deleteEmployee, searchEmployeeById }; 

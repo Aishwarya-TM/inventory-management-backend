@@ -57,19 +57,24 @@ const productSchema = new mongoose.Schema(
       default: 10, 
       min: 0,
     },
-   
     SKU: { 
       type: String,
       unique: true,
       sparse: true,
       trim: true,
     },
+    dateAdded: { 
+      type: Date,
+      required: true,
+    },
+    lastUpdated: {
+      type: Date,
+      required: true,
+    }
   },
   {
-    timestamps: true, 
     collection: "Products",
   }
 );
-
 
 module.exports = mongoose.model("Products", productSchema);

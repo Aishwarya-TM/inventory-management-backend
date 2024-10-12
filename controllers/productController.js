@@ -1,5 +1,6 @@
 const productData = require('../data/productData');
 const productModel = require('../models/productModel');
+const mongoose = require('mongoose');
 
 const getAllproducts = async (request, response) => {
     let products = await productModel.find().select('-_id');
@@ -138,21 +139,28 @@ const trackInventoryLevel = async (request, response) => {
     }
 }
 
-const generateReports = async (req, res) => {
+const generateReports = async (request, response) => {
     try {
-        const { startDate, endDate } = req.query;
-
+        const { startDate, endDate } = request.query;
         if (!startDate || !endDate) {
-            return res.status(400).json({ message: 'Start date and end date are required' });
+            return response.status(400).json({ message: 'Start date and end date are required' });
         }
-
         const start = new Date(startDate);
         const end = new Date(endDate);
 
+        if (isNaN(start) || isNaN(end)) {
+            return response.status(400).json({ message: 'Invalid date format' });
+        }
+
+        console.log('Start Date:', start);
+        console.log('End Date:', end);
+
+        
         const totalProductsAdded = await productModel.countDocuments({
             dateAdded: { $gte: start, $lte: end },
         });
 
+        
         const inventoryValue = await productModel.aggregate([
             {
                 $match: {
@@ -167,6 +175,7 @@ const generateReports = async (req, res) => {
             },
         ]);
 
+      
         const totalSales = await productModel.aggregate([
             {
                 $match: {
@@ -181,15 +190,46 @@ const generateReports = async (req, res) => {
             },
         ]);
 
-        res.status(200).json({
+        return response.status(200).json({
             totalProductsAdded,
             inventoryValue: inventoryValue[0] ? inventoryValue[0].totalValue : 0,
             totalSales: totalSales[0] ? totalSales[0].totalSold : 0,
         });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error(error); 
+        return response.status(500).json({ message: error.message });
     }
 };
+
+
+const restockProduct = async (request, response) => {
+        const { _id, quantity } = request.body;
+    
+        try {
+            if (!_id || !quantity) {
+                return response.status(400).json({ message: 'Please provide product id and quantity.' });
+            }
+    
+           
+            if (!mongoose.Types.ObjectId.isValid(_id)) {
+                return response.status(400).json({ message: 'Invalid product id.' });
+            }
+    
+            const product = await productModel.findById(_id);
+            if (!product) {
+                return response.status(404).json({ message: 'Product not found.' });
+            }
+    
+            product.quantity += Number(quantity);
+            product.lastUpdated = Date.now();
+            await product.save();
+            
+            return response.status(200).json(product);
+        } catch (error) {
+            return response.status(500).json({ message: error.message });
+        }
+    };
+    
 
 
 
@@ -203,5 +243,7 @@ module.exports = {
     searchProduct,
     searchProductByUPC,
     filterProduct,
-    trackInventoryLevel
+    trackInventoryLevel,
+    generateReports,
+    restockProduct
 };
