@@ -155,12 +155,12 @@ const generateReports = async (request, response) => {
         console.log('Start Date:', start);
         console.log('End Date:', end);
 
-        
+
         const totalProductsAdded = await productModel.countDocuments({
             dateAdded: { $gte: start, $lte: end },
         });
 
-        
+
         const inventoryValue = await productModel.aggregate([
             {
                 $match: {
@@ -175,7 +175,7 @@ const generateReports = async (request, response) => {
             },
         ]);
 
-      
+
         const totalSales = await productModel.aggregate([
             {
                 $match: {
@@ -196,40 +196,40 @@ const generateReports = async (request, response) => {
             totalSales: totalSales[0] ? totalSales[0].totalSold : 0,
         });
     } catch (error) {
-        console.error(error); 
+        console.error(error);
         return response.status(500).json({ message: error.message });
     }
 };
 
 
 const restockProduct = async (request, response) => {
-        const { _id, quantity } = request.body;
-    
-        try {
-            if (!_id || !quantity) {
-                return response.status(400).json({ message: 'Please provide product id and quantity.' });
-            }
-    
-           
-            if (!mongoose.Types.ObjectId.isValid(_id)) {
-                return response.status(400).json({ message: 'Invalid product id.' });
-            }
-    
-            const product = await productModel.findById(_id);
-            if (!product) {
-                return response.status(404).json({ message: 'Product not found.' });
-            }
-    
-            product.quantity += Number(quantity);
-            product.lastUpdated = Date.now();
-            await product.save();
-            
-            return response.status(200).json(product);
-        } catch (error) {
-            return response.status(500).json({ message: error.message });
+    const { _id, quantity } = request.body;
+
+    try {
+        if (!_id || !quantity) {
+            return response.status(400).json({ message: 'Please provide product id and quantity.' });
         }
-    };
-    
+
+
+        if (!mongoose.Types.ObjectId.isValid(_id)) {
+            return response.status(400).json({ message: 'Invalid product id.' });
+        }
+
+        const product = await productModel.findById(_id);
+        if (!product) {
+            return response.status(404).json({ message: 'Product not found.' });
+        }
+
+        product.quantity += Number(quantity);
+        product.lastUpdated = Date.now();
+        await product.save();
+
+        return response.status(200).json(product);
+    } catch (error) {
+        return response.status(500).json({ message: error.message });
+    }
+};
+
 
 
 

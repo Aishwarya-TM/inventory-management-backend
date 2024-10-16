@@ -44,7 +44,7 @@ const updateSupplier = async (request, response) => {
     try {
         let existingSupplier = await supplierModel.findOne({ email: supplierToBeUpdated.email }).select('-_id');
         if (existingSupplier) {
-            let updatedSupplier = await supplierModel.updateMany({ email: supplierToBeUpdated.email }, supplierToBeUpdated);
+            let updatedSupplier = await supplierModel.updateOne({ email: supplierToBeUpdated.email }, supplierToBeUpdated);
             response.status(200).json(updatedSupplier);
         } else {
             response.status(404).json({ message: `Supplier with email id ${supplierToBeUpdated.email} doesn't exist!` });

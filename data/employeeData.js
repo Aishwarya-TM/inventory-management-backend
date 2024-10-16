@@ -1,184 +1,166 @@
-const employeeData = [
-  {
-    name: "Alice Johnson",
-    email: "alice.johnson@example.com",
-    password: "password123",
-    phone: "1234567890",
-    role: "admin",
-    isActive: true,
-    profilePicture: "",
-  },
-  {
-    name: "Bob Smith",
-    email: "bob.smith@example.com",
-    password: "password123",
-    phone: "1234567891",
-    role: "manager",
-    isActive: true,
-    profilePicture: "",
-  },
-  {
-    name: "Charlie Brown",
-    email: "charlie.brown@example.com",
-    password: "password123",
-    phone: "1234567892",
-    role: "staff",
-    isActive: true,
-    profilePicture: "",
-  },
-  {
-    name: "Diana Prince",
-    email: "diana.prince@example.com",
-    password: "password123",
-    phone: "1234567893",
-    role: "staff",
-    isActive: true,
-    profilePicture: "",
-  },
-  {
-    name: "Ethan Hunt",
-    email: "ethan.hunt@example.com",
-    password: "password123",
-    phone: "1234567894",
-    role: "manager",
-    isActive: true,
-    profilePicture: "",
-  },
-  {
-    name: "Fiona Gallagher",
-    email: "fiona.gallagher@example.com",
-    password: "password123",
-    phone: "1234567895",
-    role: "admin",
-    isActive: true,
-    profilePicture: "",
-  },
-  {
-    name: "George Costanza",
-    email: "george.costanza@example.com",
-    password: "password123",
-    phone: "1234567896",
-    role: "staff",
-    isActive: true,
-    profilePicture: "",
-  },
-  {
-    name: "Hannah Montana",
-    email: "hannah.montana@example.com",
-    password: "password123",
-    phone: "1234567897",
-    role: "manager",
-    isActive: true,
-    profilePicture: "",
-  },
-  {
-    name: "Ian Malcolm",
-    email: "ian.malcolm@example.com",
-    password: "password123",
-    phone: "1234567898",
-    role: "admin",
-    isActive: true,
-    profilePicture: "",
-  },
-  {
-    name: "Jack Sparrow",
-    email: "jack.sparrow@example.com",
-    password: "password123",
-    phone: "1234567899",
-    role: "staff",
-    isActive: true,
-    profilePicture: "",
-  },
-  {
-    name: "Kathy Bates",
-    email: "kathy.bates@example.com",
-    password: "password123",
-    phone: "1234567800",
-    role: "manager",
-    isActive: true,
-    profilePicture: "",
-  },
-  {
-    name: "Liam Neeson",
-    email: "liam.neeson@example.com",
-    password: "password123",
-    phone: "1234567801",
-    role: "staff",
-    isActive: true,
-    profilePicture: "",
-  },
-  {
-    name: "Mia Thermopolis",
-    email: "mia.thermopolis@example.com",
-    password: "password123",
-    phone: "1234567802",
-    role: "admin",
-    isActive: true,
-    profilePicture: "",
-  },
-  {
-    name: "Nina Simone",
-    email: "nina.simone@example.com",
-    password: "password123",
-    phone: "1234567803",
-    role: "manager",
-    isActive: true,
-    profilePicture: "",
-  },
-  {
-    name: "Oscar Isaac",
-    email: "oscar.isaac@example.com",
-    password: "password123",
-    phone: "1234567804",
-    role: "staff",
-    isActive: true,
-    profilePicture: "",
-  },
-  {
-    name: "Pam Beesly",
-    email: "pam.beesly@example.com",
-    password: "password123",
-    phone: "1234567805",
-    role: "admin",
-    isActive: true,
-    profilePicture: "",
-  },
-  {
-    name: "Quinn Fabray",
-    email: "quinn.fabray@example.com",
-    password: "password123",
-    phone: "1234567806",
-    role: "staff",
-    isActive: true,
-    profilePicture: "",
-  },
-  {
-    name: "Raymond Reddington",
-    email: "raymond.reddington@example.com",
-    password: "password123",
-    phone: "1234567807",
-    role: "manager",
-    isActive: true,
-    profilePicture: "",
-  },
-  {
-    name: "Sara Lance",
-    email: "sara.lance@example.com",
-    password: "password123",
-    phone: "1234567808",
-    role: "admin",
-    isActive: true,
-    profilePicture: "",
-  },
-  {
-    name: "Tom Hanks",
-    email: "tom.hanks@example.com",
-    password: "password123",
-    phone: "1234567809",
-    role: "staff",
-    isActive: true,
-    profilePicture: "",
-  },
-];
 
-module.exports = employeeData;
+const employeeData =
+
+[
+  {
+    "name": "Alice Smith",
+    "email": "alice.smith@example.com",
+    "password": "Admin123!",
+    "phone": "1234567890",
+    "role": "admin",
+    "isActive": true
+  },
+  {
+    "name": "Bob Johnson",
+    "email": "bob.johnson@example.com",
+    "password": "Admin123!",
+    "phone": "2345678901",
+    "role": "admin",
+    "isActive": true
+  },
+  {
+    "name": "Charlie Brown",
+    "email": "charlie.brown@example.com",
+    "password": "Employee123!",
+    "phone": "3456789012",
+    "role": "employee",
+    "isActive": true
+  },
+  {
+    "name": "David Williams",
+    "email": "david.williams@example.com",
+    "password": "Employee123!",
+    "phone": "4567890123",
+    "role": "employee",
+    "isActive": true
+  },
+  {
+    "name": "Emily Davis",
+    "email": "emily.davis@example.com",
+    "password": "Employee123!",
+    "phone": "5678901234",
+    "role": "employee",
+    "isActive": true
+  },
+  {
+    "name": "Frank Harris",
+    "email": "frank.harris@example.com",
+    "password": "Admin123!",
+    "phone": "6789012345",
+    "role": "admin",
+    "isActive": true
+  },
+  {
+    "name": "Grace Lee",
+    "email": "grace.lee@example.com",
+    "password": "Employee123!",
+    "phone": "7890123456",
+    "role": "employee",
+    "isActive": true
+  },
+  {
+    "name": "Hannah Martin",
+    "email": "hannah.martin@example.com",
+    "password": "Employee123!",
+    "phone": "8901234567",
+    "role": "employee",
+    "isActive": true
+  },
+  {
+    "name": "Ian Thompson",
+    "email": "ian.thompson@example.com",
+    "password": "Employee123!",
+    "phone": "9012345678",
+    "role": "employee",
+    "isActive": true
+  },
+  {
+    "name": "Jack White",
+    "email": "jack.white@example.com",
+    "password": "Admin123!",
+    "phone": "0123456789",
+    "role": "admin",
+    "isActive": true
+  },
+  {
+    "name": "Karen Walker",
+    "email": "karen.walker@example.com",
+    "password": "Employee123!",
+    "phone": "1234567891",
+    "role": "employee",
+    "isActive": true
+  },
+  {
+    "name": "Liam Hall",
+    "email": "liam.hall@example.com",
+    "password": "Employee123!",
+    "phone": "2345678902",
+    "role": "employee",
+    "isActive": true
+  },
+  {
+    "name": "Mia Scott",
+    "email": "mia.scott@example.com",
+    "password": "Employee123!",
+    "phone": "3456789013",
+    "role": "employee",
+    "isActive": true
+  },
+  {
+    "name": "Noah Young",
+    "email": "noah.young@example.com",
+    "password": "Admin123!",
+    "phone": "4567890124",
+    "role": "admin",
+    "isActive": true
+  },
+  {
+    "name": "Olivia Allen",
+    "email": "olivia.allen@example.com",
+    "password": "Employee123!",
+    "phone": "5678901235",
+    "role": "employee",
+    "isActive": true
+  },
+  {
+    "name": "Paul King",
+    "email": "paul.king@example.com",
+    "password": "Admin123!",
+    "phone": "6789012346",
+    "role": "admin",
+    "isActive": true
+  },
+  {
+    "name": "Quinn Wright",
+    "email": "quinn.wright@example.com",
+    "password": "Employee123!",
+    "phone": "7890123457",
+    "role": "employee",
+    "isActive": true
+  },
+  {
+    "name": "Ruby Turner",
+    "email": "ruby.turner@example.com",
+    "password": "Employee123!",
+    "phone": "8901234568",
+    "role": "employee",
+    "isActive": true
+  },
+  {
+    "name": "Sam Green",
+    "email": "sam.green@example.com",
+    "password": "Employee123!",
+    "phone": "9012345679",
+    "role": "employee",
+    "isActive": true
+  },
+  {
+    "name": "Tina Adams",
+    "email": "tina.adams@example.com",
+    "password": "Admin123!",
+    "phone": "0123456780",
+    "role": "admin",
+    "isActive": true
+  }
+]
+module.exports = employeeData
