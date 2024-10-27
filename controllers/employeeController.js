@@ -41,7 +41,7 @@ const addNewEmployee = async (request, response) => {
 const searchEmployeeById = async (request, response) => {
     let { id } = request.params;
     try {
-        let employee = await employeeModel.findById(id).select('-_id');
+        let employee = await employeeModel.findById(id);
         if (!employee) {
             response.status(404).json({ message: "Employee not found" });
         } else {
