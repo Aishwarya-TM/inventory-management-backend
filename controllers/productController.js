@@ -155,12 +155,12 @@ const generateReports = async (request, response) => {
         console.log('Start Date:', start);
         console.log('End Date:', end);
 
-
+       
         const totalProductsAdded = await productModel.countDocuments({
             dateAdded: { $gte: start, $lte: end },
         });
 
-
+   
         const inventoryValue = await productModel.aggregate([
             {
                 $match: {
@@ -175,7 +175,7 @@ const generateReports = async (request, response) => {
             },
         ]);
 
-
+       
         const totalSales = await productModel.aggregate([
             {
                 $match: {
@@ -190,10 +190,29 @@ const generateReports = async (request, response) => {
             },
         ]);
 
+       
+        const soldItems = await productModel.aggregate([
+            {
+                $match: {
+                    dateAdded: { $gte: start, $lte: end },
+                    sold: { $gt: 0 }, 
+                },
+            },
+            {
+                $project: {
+                    upc: 1,
+                    name: 1,
+                    quantitySold: '$sold',
+                    salePrice: '$price',
+                },
+            },
+        ]);
+
         return response.status(200).json({
             totalProductsAdded,
             inventoryValue: inventoryValue[0] ? inventoryValue[0].totalValue : 0,
             totalSales: totalSales[0] ? totalSales[0].totalSold : 0,
+            soldItems,
         });
     } catch (error) {
         console.error(error);
