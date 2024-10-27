@@ -3,7 +3,7 @@ const productModel = require('../models/productModel');
 const mongoose = require('mongoose');
 
 const getAllproducts = async (request, response) => {
-    let products = await productModel.find().select('-_id');
+    let products = await productModel.find();
     if (products.length == 0) {
         await productModel.insertMany(productData);
         products = await productModel.find().select('-_id');
