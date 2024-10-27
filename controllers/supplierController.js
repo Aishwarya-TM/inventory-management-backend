@@ -2,7 +2,7 @@ const supplierData = require('../data/supplierData')
 const supplierModel = require('../models/supplierModel')
 
 const getAllSuppliers = async (request, response) => {
-    let suppliers = await supplierModel.find().select('-_id');
+    let suppliers = await supplierModel.find();
     if (suppliers.length === 0) {
         await supplierModel.insertMany(supplierData);
         suppliers = await supplierModel.find().select('-_id');
