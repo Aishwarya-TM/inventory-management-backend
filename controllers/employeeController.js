@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 
 const getAllEmployees = async (request, response) => {
     try {
-        let employees = await employeeModel.find().select('-_id');
+        let employees = await employeeModel.find();
         if (employees.length === 0) {
             for (let employee of employeeData) {
                 const salt = await bcrypt.genSalt(10);
