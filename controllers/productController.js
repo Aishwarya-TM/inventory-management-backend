@@ -97,28 +97,31 @@ const filterProduct = async (request, response) => {
         if (priceMin || priceMax) {
             filter.price = {};
             if (priceMin) {
-                filter.price.$gte = Number(priceMin)
+                filter.price.$gte = Number(priceMin);
             }
-            filter.price.$lte = Number(priceMax)
+            if (priceMax) {
+                filter.price.$lte = Number(priceMax);
+            }
         }
-        if (quantityMax || quantityMin) {
+        if (quantityMin || quantityMax) {
             filter.quantity = {};
             if (quantityMin) {
-                filter.quantity.$gte = Number(quantityMin)
+                filter.quantity.$gte = Number(quantityMin);
             }
-            filter.quantity.$lte = Number(quantityMax)
+            if (quantityMax) {
+                filter.quantity.$lte = Number(quantityMax);
+            }
         }
-        const product = await productModel.find(filter).populate('Supplier', 'name email phone address')
-        if (!product || product.length === 0) {
-            response.status(404).json({ message: "No product found for your search request" })
+        const products = await productModel.find(filter).populate('Supplier', 'name email phone address');
+        if (!products || products.length === 0) {
+            return response.status(404).json({ message: "No product found for your search request" });
         }
-        response.status(200).json(product)
+        response.status(200).json(products);
+    } catch (error) {
+        console.error(error);
+        response.status(500).json({ message: error.message });
     }
-    catch (error) {
-        response.status(500).json({ message: error.message })
-    }
-
-}
+};
 
 const trackInventoryLevel = async (request, response) => {
     let { lowStockThreshHold } = request.query;
