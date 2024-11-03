@@ -6,7 +6,7 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please enter a name"],
       trim: true,
-      index: true, 
+      index: true,
     },
     description: {
       type: String,
@@ -22,7 +22,7 @@ const productSchema = new mongoose.Schema(
       min: 0,
       index: true,
     },
-    sold: { 
+    sold: {
       type: Number,
       default: 0,
       min: 0,
@@ -49,28 +49,28 @@ const productSchema = new mongoose.Schema(
     },
     supplier: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Supplier', 
+      ref: 'Supplier',
       required: true,
     },
-    reorderLevel: { 
+    reorderLevel: {
       type: Number,
-      default: 10, 
+      default: 10,
       min: 0,
     },
-    SKU: { 
+    SKU: {
       type: String,
       unique: true,
       sparse: true,
       trim: true,
     },
-    dateAdded: { 
+    dateAdded: {
       type: Date,
       required: true,
     },
     lastUpdated: {
       type: Date,
       required: true,
-    }
+    },
   },
   {
     collection: "Products",
