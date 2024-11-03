@@ -112,7 +112,8 @@ const filterProduct = async (request, response) => {
                 filter.quantity.$lte = Number(quantityMax);
             }
         }
-        const products = await productModel.find(filter).populate('Supplier', 'name email phone address');
+
+        const products = await productModel.find(filter);
         if (!products || products.length === 0) {
             return response.status(404).json({ message: "No product found for your search request" });
         }
@@ -122,6 +123,7 @@ const filterProduct = async (request, response) => {
         response.status(500).json({ message: error.message });
     }
 };
+
 
 
 const trackInventoryLevel = async (request, response) => {
